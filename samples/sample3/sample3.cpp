@@ -184,8 +184,6 @@ MyFrame::MyFrame()
     axesPos[1] = 0;
     ticks = true;
 
-
-	m_plot->EnableDoubleBuffer(true);
     m_plot->LockAspect( true );
     m_plot->Fit();
 

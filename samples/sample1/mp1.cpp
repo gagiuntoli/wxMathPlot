@@ -284,7 +284,6 @@ MyFrame::MyFrame()
     axesPos[1] = 0;
     ticks = true;
 
-    m_plot->EnableDoubleBuffer(true);
     m_plot->SetMPScrollbars(false);
     m_plot->Fit();
 

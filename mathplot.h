@@ -1096,11 +1096,6 @@ public:
   //     (m_posY-y) * m_scaleY); }
   inline wxCoord y2p(double y) { return (wxCoord)((m_posY - y) * m_scaleY); }
 
-  /** Enable/disable the double-buffering of the window, eliminating the flicker
-   * (default=disabled).
-   */
-  void EnableDoubleBuffer(bool enabled) { m_enableDoubleBuffer = enabled; }
-
   /** Enable/disable the feature of pan/zoom with the mouse (default=enabled)
    */
   void EnableMousePanZoom(bool enabled) { m_enableMouseNavigation = enabled; }
@@ -1394,7 +1389,6 @@ protected:
   int m_last_lx, m_last_ly;     //!< For double buffering
   wxMemoryDC m_buff_dc;         //!< For double buffering
   wxBitmap *m_buff_bmp;         //!< For double buffering
-  bool m_enableDoubleBuffer;    //!< For double buffering
   bool m_enableMouseNavigation; //!< For pan/zoom with the mouse.
   bool m_mouseMovedAfterRightClick;
   long m_mouseRClick_X,

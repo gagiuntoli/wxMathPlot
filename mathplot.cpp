@@ -31,6 +31,7 @@
 #include <wx/msgdlg.h>
 #include <wx/image.h>
 #include <wx/tipwin.h>
+#include <wx/dcbuffer.h>
 
 
 #include <cmath>
@@ -1191,7 +1192,6 @@ mpWindow::mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos,
   m_maxX = m_maxY = 0;
   m_last_lx = m_last_ly = 0;
   m_buff_bmp = NULL;
-  m_enableDoubleBuffer = FALSE;
   m_enableMouseNavigation = TRUE;
   m_mouseMovedAfterRightClick = FALSE;
   m_movingInfoLayer = NULL;
@@ -1221,8 +1221,7 @@ mpWindow::mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos,
   m_enableScrollBars = false;
   SetSizeHints(128, 128);
 
-  // J.L.Blanco: Eliminates the "flick" with the double buffer.
-  SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+  SetBackgroundStyle(wxBG_STYLE_PAINT);
 
   UpdateAll();
 }
@@ -1777,7 +1776,7 @@ void mpWindow::DelAllLayers(bool alsoDeleteObject, bool refreshDisplay) {
 // }
 
 void mpWindow::OnPaint(wxPaintEvent &WXUNUSED(event)) {
-  wxPaintDC dc(this);
+  wxBufferedPaintDC dc(this);
   dc.GetSize(&m_scrX, &m_scrY); // This is the size of the visible area only!
 //     DoPrepareDC(dc);
 
@@ -1790,53 +1789,19 @@ void mpWindow::OnPaint(wxPaintEvent &WXUNUSED(event)) {
   }
 #endif
 
-  // Selects direct or buffered draw:
-  wxDC *trgDc;
-
-  // J.L.Blanco @ Aug 2007: Added double buffer support
-  if (m_enableDoubleBuffer) {
-    if (m_last_lx != m_scrX || m_last_ly != m_scrY) {
-      if (m_buff_bmp)
-        delete m_buff_bmp;
-      m_buff_bmp = new wxBitmap(m_scrX, m_scrY);
-      m_buff_dc.SelectObject(*m_buff_bmp);
-      m_last_lx = m_scrX;
-      m_last_ly = m_scrY;
-    }
-    trgDc = &m_buff_dc;
-  } else {
-    trgDc = &dc;
-  }
-
-  // Draw background:
-  // trgDc->SetDeviceOrigin(0,0);
-  trgDc->SetPen(*wxTRANSPARENT_PEN);
   wxBrush brush(GetBackgroundColour());
-  trgDc->SetBrush(brush);
-  trgDc->SetTextForeground(m_fgColour);
-  trgDc->DrawRectangle(0, 0, m_scrX, m_scrY);
+  dc.SetPen(*wxTRANSPARENT_PEN);
+  dc.SetBrush(brush);
+  dc.SetTextForeground(m_fgColour);
+  dc.DrawRectangle(0, 0, m_scrX, m_scrY);
 
   // Draw all the layers:
   // trgDc->SetDeviceOrigin( m_scrX>>1, m_scrY>>1);  // Origin at the center
   wxLayerList::iterator li;
-  for (li = m_layers.begin(); li != m_layers.end(); li++) {
-    (*li)->Plot(*trgDc, *this);
+  for (li = m_layers.begin(); li != m_layers.end(); ++li) {
+    (*li)->Plot(dc, *this);
   };
 
-  // If doublebuffer, draw now to the window:
-  if (m_enableDoubleBuffer) {
-    // trgDc->SetDeviceOrigin(0,0);
-    // dc.SetDeviceOrigin(0,0);  // Origin at the center
-    dc.Blit(0, 0, m_scrX, m_scrY, trgDc, 0, 0);
-  }
-
-  /*    if (m_coordTooltip) {
-          wxString toolTipContent;
-          wxPoint mousePoint =  wxGetMousePosition();
-          toolTipContent.Printf(_("X = %f\nY = %f"), p2x(mousePoint.x),
-     p2y(mousePoint.y));
-          SetToolTip(toolTipContent);
-      }*/
   // If scrollbars are enabled, refresh them
   if (m_enableScrollBars) {
     /*       m_scrollX = (int) floor((m_posX - m_minX)*m_scaleX);
