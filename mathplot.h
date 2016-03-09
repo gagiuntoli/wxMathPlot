@@ -1232,7 +1232,7 @@ public:
         @param imageSize Set a size for the output image. Default is the same as
     the screen size
         @param fit Decide whether to fit the plot into the size*/
-  bool SaveScreenshot(const wxString &filename, int type = wxBITMAP_TYPE_BMP,
+  bool SaveScreenshot(const wxString &filename, wxBitmapType type = wxBITMAP_TYPE_BMP,
                       wxSize imageSize = wxDefaultSize, bool fit = false);
 
   /** This value sets the zoom steps whenever the user clicks "Zoom in/out" or
@@ -1303,10 +1303,9 @@ public:
 
   /** Set Color theme. Provide colours to set a new colour theme.
       @param bgColour Background colour
-          @param drawColour The colour used to draw all elements in foreground,
-     axes excluded
-          @param axesColour The colour used to draw axes (but not their labels)
-     */
+      @param drawColour The colour used to draw all elements in foreground,
+      axes excluded
+      @param axesColour The colour used to draw axes (but not their labels)*/
   void SetColourTheme(const wxColour &bgColour, const wxColour &drawColour,
                       const wxColour &axesColour);
 

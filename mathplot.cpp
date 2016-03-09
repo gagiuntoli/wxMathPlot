@@ -2213,7 +2213,7 @@ mpLayer *mpWindow::GetLayer(int position) {
 }
 
 mpLayer *mpWindow::GetLayerByName(const wxString &name) {
-  for (wxLayerList::iterator it = m_layers.begin(); it != m_layers.end(); it++)
+  for (wxLayerList::iterator it = m_layers.begin(); it != m_layers.end(); ++it)
     if (!(*it)->GetName().Cmp(name))
       return *it;
   return NULL; // Not found
@@ -2226,7 +2226,7 @@ void mpWindow::GetBoundingBox(double *bbox) {
   bbox[3] = m_maxY;
 }
 
-bool mpWindow::SaveScreenshot(const wxString &filename, int type,
+bool mpWindow::SaveScreenshot(const wxString &filename, wxBitmapType type,
                               wxSize imageSize, bool fit) {
   int sizeX, sizeY;
   int bk_scrX, bk_scrY;
@@ -2257,7 +2257,7 @@ bool mpWindow::SaveScreenshot(const wxString &filename, int type,
   }
   // Draw all the layers:
   wxLayerList::iterator li;
-  for (li = m_layers.begin(); li != m_layers.end(); li++)
+  for (li = m_layers.begin(); li != m_layers.end(); ++li)
     (*li)->Plot(screenDC, *this);
 
   if (imageSize != wxDefaultSize) {
@@ -2281,7 +2281,7 @@ void mpWindow::SetMargins(int top, int right, int bottom, int left) {
 
 mpInfoLayer *mpWindow::IsInsideInfoLayer(wxPoint &point) {
   wxLayerList::iterator li;
-  for (li = m_layers.begin(); li != m_layers.end(); li++) {
+  for (li = m_layers.begin(); li != m_layers.end(); ++li) {
 #ifdef MATHPLOT_DO_LOGGING
     wxLogMessage(_("mpWindow::IsInsideInfoLayer() examinining layer = %p"),
                  (*li));
@@ -2335,7 +2335,7 @@ void mpWindow::SetColourTheme(const wxColour &bgColour,
   m_axColour = axesColour;
   // cycle between layers to set colours and properties to them
   wxLayerList::iterator li;
-  for (li = m_layers.begin(); li != m_layers.end(); li++) {
+  for (li = m_layers.begin(); li != m_layers.end(); ++li) {
     if ((*li)->GetLayerType() == mpLAYER_AXIS) {
       wxPen axisPen = (*li)->GetPen(); // Get the old pen to modify only colour,
                                        // not style or width
@@ -2465,13 +2465,13 @@ void mpFXYVector::SetData(const std::vector<double> &xs,
 
     std::vector<double>::const_iterator it;
 
-    for (it = xs.begin(); it != xs.end(); it++) {
+    for (it = xs.begin(); it != xs.end(); ++it) {
       if (*it < m_minX)
         m_minX = *it;
       if (*it > m_maxX)
         m_maxX = *it;
     }
-    for (it = ys.begin(); it != ys.end(); it++) {
+    for (it = ys.begin(); it != ys.end(); ++it) {
       if (*it < m_minY)
         m_minY = *it;
       if (*it > m_maxY)
@@ -2590,8 +2590,8 @@ bool mpPrintout::OnPrintPage(int page) {
 
     // Draw all the layers:
     // trgDc->SetDeviceOrigin( m_prnX>>1, m_prnY>>1);  // Origin at the center
-    mpLayer *layer;
-    for (unsigned int li = 0; li < plotWindow->CountAllLayers(); li++) {
+    for (unsigned int li = 0; li < plotWindow->CountAllLayers(); ++li) {
+      mpLayer *layer;
       layer = plotWindow->GetLayer(li);
       layer->Plot(*trgDc, *plotWindow);
     };
@@ -2646,7 +2646,7 @@ void mpMovableObject::ShapeUpdated() {
 
     for (itXo = m_trans_shape_xs.begin(), itYo = m_trans_shape_ys.begin(),
         itXi = m_shape_xs.begin(), itYi = m_shape_ys.begin();
-         itXo != m_trans_shape_xs.end(); itXo++, itYo++, itXi++, itYi++) {
+         itXo != m_trans_shape_xs.end(); ++itXo, ++itYo, ++itXi, ++itYi) {
       *itXo = m_reference_x + ccos * (*itXi) - csin * (*itYi);
       *itYo = m_reference_y + csin * (*itXi) + ccos * (*itYi);
 

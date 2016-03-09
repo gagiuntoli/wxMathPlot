@@ -451,7 +451,7 @@ void MyFrame::OnSaveScreenshot(wxCommandEvent& event)
     wxFileDialog fileDialog(this, _("Save a screenshot"), wxT(""), wxT(""), wxT("BMP image (*.bmp) | *.bmp|JPEG image (*.jpg) | *.jpeg;*.jpg|PNG image (*.png) | *.png"), wxFD_SAVE);
     if(fileDialog.ShowModal() == wxID_OK) {
         wxFileName namePath(fileDialog.GetPath());
-        int fileType = wxBITMAP_TYPE_BMP;
+        wxBitmapType fileType = wxBITMAP_TYPE_BMP;
         if( namePath.GetExt().CmpNoCase(wxT("jpeg")) == 0 ) fileType = wxBITMAP_TYPE_JPEG;
         if( namePath.GetExt().CmpNoCase(wxT("jpg")) == 0 )  fileType = wxBITMAP_TYPE_JPEG;
         if( namePath.GetExt().CmpNoCase(wxT("png")) == 0 )  fileType = wxBITMAP_TYPE_PNG;
