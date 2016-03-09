@@ -1947,9 +1947,8 @@ bool mpWindow::UpdateBBox() {
     // node = node->GetNext();
   }
 #ifdef MATHPLOT_DO_LOGGING
-  wxLogDebug(wxT("[mpWindow::UpdateBBox] Bounding box: Xmin = %f, Xmax = %f, "
-                 "Ymin = %f, YMax = %f"),
-             m_minX, m_maxX, m_minY, m_maxY);
+  wxLogDebug(wxT("[mpWindow::UpdateBBox] Bounding box: Xmin = %f, Xmax = %f, \
+Ymin = %f, YMax = %f"), m_minX, m_maxX, m_minY, m_maxY);
 #endif // MATHPLOT_DO_LOGGING
   return first == FALSE;
 }
@@ -2590,8 +2589,8 @@ void mpMovableObject::TranslatePoint(double x, double y, double &out_x,
 void mpMovableObject::ShapeUpdated() {
   // Just in case...
   if (m_shape_xs.size() != m_shape_ys.size()) {
-    wxLogError(wxT("[mpMovableObject::ShapeUpdated] Error, m_shape_xs and "
-                   "m_shape_ys have different lengths!"));
+    wxLogError(wxT("[mpMovableObject::ShapeUpdated] Error, m_shape_xs and \
+m_shape_ys have different lengths!"));
   } else {
     double ccos = cos(m_reference_phi); // Avoid computing cos/sin twice.
     double csin = sin(m_reference_phi);
