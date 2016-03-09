@@ -290,12 +290,12 @@ public:
   /** Set layer font
       @param font Font, will be copied to internal class member
   */
-  void SetFont(wxFont &font) { m_font = font; }
+  void SetFont(const wxFont &font) { m_font = font; }
 
   /** Set layer pen
       @param pen Pen, will be copied to internal class member
   */
-  void SetPen(wxPen pen) { m_pen = pen; }
+  void SetPen(const wxPen &pen) { m_pen = pen; }
 
   /** Set Draw mode: inside or outside margins. Default is outside, which allows
      the layer to draw up to the mpWindow border.
@@ -427,7 +427,6 @@ protected:
   wxRect m_dim;        //!< The bounding rectangle of the box. It may be resized
                        //dynamically by the Plot method.
   wxPoint m_reference; //!< Holds the reference point for movements
-  wxBrush m_brush;     //!< The brush to be used for the background
   int m_winX, m_winY;  //!< Holds the mpWindow size. Used to rescale position
                        //when window is resized.
 
@@ -1546,6 +1545,7 @@ public:
   bool HasPage(int page);
 
 private:
+  mpPrintout() : drawn(false), plotWindow(NULL) {};
   bool drawn;
   mpWindow *plotWindow;
 };

@@ -66,12 +66,13 @@ double mpWindow::zoomIncrementalFactor = 1.5;
 IMPLEMENT_ABSTRACT_CLASS(mpLayer, wxObject)
 
 mpLayer::mpLayer() : m_type(mpLAYER_UNDEF) {
-  SetPen((wxPen &)*wxBLACK_PEN);
-  SetFont((wxFont &)*wxNORMAL_FONT);
+  m_pen = *wxBLACK_PEN;
+  m_font = *wxNORMAL_FONT;
   m_continuous = FALSE; // Default
   m_showName = TRUE;    // Default
   m_drawOutsideMargins = TRUE;
   m_visible = true;
+  m_brush = *wxTRANSPARENT_BRUSH;
 }
 
 wxBitmap mpLayer::GetColourSquare(int side) {
@@ -93,7 +94,6 @@ IMPLEMENT_DYNAMIC_CLASS(mpInfoLayer, mpLayer)
 
 mpInfoLayer::mpInfoLayer() {
   m_dim = wxRect(0, 0, 1, 1);
-  m_brush = *wxTRANSPARENT_BRUSH;
   m_reference.x = 0;
   m_reference.y = 0;
   m_winX = 1; // parent->GetScrX();
@@ -262,8 +262,6 @@ void mpInfoLegend::Plot(wxDC &dc, mpWindow &w) {
     dc.SetFont(m_font);
     const int baseWidth = (mpLEGEND_MARGIN * 2 + mpLEGEND_LINEWIDTH);
     int textX = baseWidth, textY = mpLEGEND_MARGIN;
-    int plotCount = 0;
-    int posY = 0;
     int tmpX = 0, tmpY = 0;
     mpLayer *ly = NULL;
     wxPen lpen;
@@ -294,6 +292,8 @@ void mpInfoLegend::Plot(wxDC &dc, mpWindow &w) {
       for (unsigned int p2 = 0; p2 < w.CountAllLayers(); p2++) {
         ly = w.GetLayer(p2);
         if ((ly->GetLayerType() == mpLAYER_PLOT) && (ly->IsVisible())) {
+          int plotCount = 0;
+          int posY = 0;
           label = ly->GetName();
           lpen = ly->GetPen();
           dc.GetTextExtent(label, &tmpX, &tmpY);
@@ -530,10 +530,9 @@ void mpFXY::Plot(wxDC &dc, mpWindow &w) {
           x0 = x1;
           c0 = c1;
         }
-        bool outUp, outDown;
         if ((x1 >= startPx) && (x0 <= endPx)) {
-          outDown = (c0 > maxYpx) && (c1 > maxYpx);
-          outUp = (c0 < minYpx) && (c1 < minYpx);
+          bool outDown = (c0 > maxYpx) && (c1 > maxYpx);
+          bool outUp = (c0 < minYpx) && (c1 < minYpx);
           if (!outUp && !outDown) {
             if (c1 != c0) {
               if (c0 < minYpx) {
@@ -789,7 +788,6 @@ void mpScaleX::Plot(wxDC &dc, mpWindow &w) {
     wxCoord maxYpx =
         m_drawOutsideMargins ? w.GetScrY() : w.GetScrY() - w.GetMarginBottom();
 
-    tmp = -65535;
     int labelH = 0; // Control labels heigth to decide where to put axis name
                     // (below labels or on top of axis)
     int maxExtent = 0;
@@ -1340,7 +1338,7 @@ void mpWindow::OnMouseMove(wxMouseEvent &event) {
       UpdateAll();
     } else {
       wxLayerList::iterator li;
-      for (li = m_layers.begin(); li != m_layers.end(); li++) {
+      for (li = m_layers.begin(); li != m_layers.end(); ++li) {
         if ((*li)->IsInfo() && (*li)->IsVisible()) {
           mpInfoLayer *tmpLyr = (mpInfoLayer *)(*li);
           tmpLyr->UpdateInfo(*this, event);
@@ -1776,7 +1774,7 @@ void mpWindow::DelAllLayers(bool alsoDeleteObject, bool refreshDisplay) {
 // }
 
 void mpWindow::OnPaint(wxPaintEvent &WXUNUSED(event)) {
-  wxBufferedPaintDC dc(this);
+  wxAutoBufferedPaintDC dc(this);
   dc.GetSize(&m_scrX, &m_scrY); // This is the size of the visible area only!
 //     DoPrepareDC(dc);
 
@@ -1925,7 +1923,7 @@ bool mpWindow::UpdateBBox() {
   bool first = TRUE;
 
   for (wxLayerList::iterator li = m_layers.begin(); li != m_layers.end();
-       li++) {
+       ++li) {
     mpLayer *f = *li;
 
     if (f->HasBBox()) {
@@ -2162,7 +2160,7 @@ unsigned int mpWindow::CountLayers() {
   // wxNode *node = m_layers.GetFirst();
   unsigned int layerNo = 0;
   for (wxLayerList::iterator li = m_layers.begin(); li != m_layers.end();
-       li++) // while(node)
+       ++li) // while(node)
   {
     if ((*li)->HasBBox())
       layerNo++;
@@ -2390,6 +2388,7 @@ mpFXYVector::mpFXYVector(wxString name, int flags) : mpFXY(name, flags) {
   m_minY = -1;
   m_maxY = 1;
   m_type = mpLAYER_PLOT;
+  m_flags = mpALIGN_CENTER;
 }
 
 void mpFXYVector::Rewind() { m_index = 0; }
@@ -2512,10 +2511,9 @@ void mpText::Plot(wxDC &dc, mpWindow &w) {
 //-----------------------------------------------------------------------------
 
 mpPrintout::mpPrintout(mpWindow *drawWindow, const wxChar *title)
-    : wxPrintout(title) {
-  drawn = false;
-  plotWindow = drawWindow;
-}
+  : drawn(false),
+    plotWindow(drawWindow),
+    wxPrintout(title) { }
 
 bool mpPrintout::OnPrintPage(int page) {
 
