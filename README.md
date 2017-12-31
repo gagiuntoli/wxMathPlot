@@ -1,4 +1,4 @@
-# This is the old readme file
+# This is the old readme
 
 wxMathPlot is a framework for mathematical graph plotting in wxWindows.
 
