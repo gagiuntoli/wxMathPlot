@@ -67,7 +67,7 @@
 #ifdef mathplot_EXPORTS
 #define WXDLLIMPEXP_MATHPLOT WXEXPORT
 #define WXDLLIMPEXP_DATA_MATHPLOT(type) WXEXPORT type
-#else // not making DLL
+#else  // not making DLL
 #define WXDLLIMPEXP_MATHPLOT
 #define WXDLLIMPEXP_DATA_MATHPLOT(type) type
 #endif
@@ -75,16 +75,16 @@
 #include <vector>
 
 // #include <wx/wx.h>
-#include <wx/defs.h>
-#include <wx/menu.h>
-#include <wx/scrolwin.h>
-#include <wx/event.h>
-#include <wx/dynarray.h>
-#include <wx/pen.h>
 #include <wx/dcmemory.h>
-#include <wx/string.h>
-#include <wx/print.h>
+#include <wx/defs.h>
+#include <wx/dynarray.h>
+#include <wx/event.h>
 #include <wx/image.h>
+#include <wx/menu.h>
+#include <wx/pen.h>
+#include <wx/print.h>
+#include <wx/scrolwin.h>
+#include <wx/string.h>
 
 #include <deque>
 
@@ -95,8 +95,8 @@
 #define DEBUG_NEW new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #else
 #define DEBUG_NEW new
-#endif // _DEBUG
-#endif // _WINDOWS
+#endif  // _DEBUG
+#endif  // _WINDOWS
 
 // Separation for axes when set close to border
 #define X_BORDER_SEPARATION 40
@@ -119,12 +119,12 @@ class WXDLLIMPEXP_MATHPLOT mpPrintout;
 
 /** Command IDs used by mpWindow */
 enum {
-  mpID_FIT = 2000, //!< Fit view to match bounding box of all layers
-  mpID_ZOOM_IN,    //!< Zoom into view at clickposition / window center
-  mpID_ZOOM_OUT,   //!< Zoom out
-  mpID_CENTER,     //!< Center view on click position
-  mpID_LOCKASPECT, //!< Lock x/y scaling aspect
-  mpID_HELP_MOUSE  //!< Shows information about the mouse commands
+  mpID_FIT = 2000,  //!< Fit view to match bounding box of all layers
+  mpID_ZOOM_IN,     //!< Zoom into view at clickposition / window center
+  mpID_ZOOM_OUT,    //!< Zoom out
+  mpID_CENTER,      //!< Center view on click position
+  mpID_LOCKASPECT,  //!< Lock x/y scaling aspect
+  mpID_HELP_MOUSE   //!< Shows information about the mouse commands
 };
 
 //-----------------------------------------------------------------------------
@@ -132,11 +132,11 @@ enum {
 //-----------------------------------------------------------------------------
 
 typedef enum __mp_Layer_Type {
-  mpLAYER_UNDEF, //!< Layer type undefined
-  mpLAYER_AXIS,  //!< Axis type layer
-  mpLAYER_PLOT,  //!< Plot type layer
-  mpLAYER_INFO,  //!< Info box type layer
-  mpLAYER_BITMAP //!< Bitmap type layer
+  mpLAYER_UNDEF,  //!< Layer type undefined
+  mpLAYER_AXIS,   //!< Axis type layer
+  mpLAYER_PLOT,   //!< Plot type layer
+  mpLAYER_INFO,   //!< Info box type layer
+  mpLAYER_BITMAP  //!< Bitmap type layer
 } mpLayerType;
 
 /** Plot layer, abstract base class.
@@ -150,10 +150,10 @@ typedef enum __mp_Layer_Type {
     These may or may not be used by implementations.
 */
 class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
-public:
+ public:
   mpLayer();
 
-  virtual ~mpLayer(){};
+  virtual ~mpLayer() {};
 
   /** Check whether this layer has a bounding box.
       The default implementation returns \a TRUE. Override and return
@@ -268,18 +268,18 @@ public:
 
   /** Set the 'continuity' property of the layer (true:draws a continuous line,
    * false:draws separate points).
-    * @sa GetContinuity
-    */
+   * @sa GetContinuity
+   */
   void SetContinuity(bool continuity) { m_continuous = continuity; }
 
   /** Gets the 'continuity' property of the layer.
-    * @sa SetContinuity
-    */
+   * @sa SetContinuity
+   */
   bool GetContinuity() const { return m_continuous; }
 
   /** Shows or hides the text label with the name of the layer (default is
    * visible).
-    */
+   */
   void ShowName(bool show) { m_showName = show; };
 
   /** Set layer name
@@ -300,9 +300,7 @@ public:
   /** Set Draw mode: inside or outside margins. Default is outside, which allows
      the layer to draw up to the mpWindow border.
       @param drawModeOutside The draw mode to be set */
-  void SetDrawOutsideMargins(bool drawModeOutside) {
-    m_drawOutsideMargins = drawModeOutside;
-  };
+  void SetDrawOutsideMargins(bool drawModeOutside) { m_drawOutsideMargins = drawModeOutside; };
 
   /** Get Draw mode: inside or outside margins.
       @return The draw mode */
@@ -335,19 +333,19 @@ public:
           @param brush brush, will be copied to internal class member	*/
   void SetBrush(wxBrush brush) { m_brush = brush; };
 
-protected:
-  wxFont m_font;     //!< Layer's font
-  wxPen m_pen;       //!< Layer's pen
-  wxBrush m_brush;   //!< Layer's brush
-  wxString m_name;   //!< Layer's name
-  bool m_continuous; //!< Specify if the layer will be plotted as a continuous
-                     //line or a set of points.
-  bool m_showName;   //!< States whether the name of the layer must be shown
-                     //(default is true).
-  bool m_drawOutsideMargins; //!< select if the layer should draw only inside
-                             //margins or over all DC
-  mpLayerType m_type; //!< Define layer type, which is assigned by constructor
-  bool m_visible;     //!< Toggles layer visibility
+ protected:
+  wxFont m_font;              //!< Layer's font
+  wxPen m_pen;                //!< Layer's pen
+  wxBrush m_brush;            //!< Layer's brush
+  wxString m_name;            //!< Layer's name
+  bool m_continuous;          //!< Specify if the layer will be plotted as a continuous
+                              // line or a set of points.
+  bool m_showName;            //!< States whether the name of the layer must be shown
+                              //(default is true).
+  bool m_drawOutsideMargins;  //!< select if the layer should draw only inside
+                              // margins or over all DC
+  mpLayerType m_type;         //!< Define layer type, which is assigned by constructor
+  bool m_visible;             //!< Toggles layer visibility
   DECLARE_DYNAMIC_CLASS(mpLayer)
 };
 
@@ -362,7 +360,7 @@ protected:
    legends.
 */
 class WXDLLIMPEXP_MATHPLOT mpInfoLayer : public mpLayer {
-public:
+ public:
   /** Default constructor. */
   mpInfoLayer();
 
@@ -423,12 +421,12 @@ public:
       @return The info layer rectangle */
   const wxRect &GetRectangle() { return m_dim; };
 
-protected:
-  wxRect m_dim;        //!< The bounding rectangle of the box. It may be resized
-                       //dynamically by the Plot method.
-  wxPoint m_reference; //!< Holds the reference point for movements
-  int m_winX, m_winY;  //!< Holds the mpWindow size. Used to rescale position
-                       //when window is resized.
+ protected:
+  wxRect m_dim;         //!< The bounding rectangle of the box. It may be resized
+                        // dynamically by the Plot method.
+  wxPoint m_reference;  //!< Holds the reference point for movements
+  int m_winX, m_winY;   //!< Holds the mpWindow size. Used to rescale position
+                        // when window is resized.
 
   DECLARE_DYNAMIC_CLASS(mpInfoLayer)
 };
@@ -440,7 +438,7 @@ protected:
    mpWindow, its coordinates (in mpWindow units, not pixels) are continuously
    reported inside the layer box. */
 class WXDLLIMPEXP_MATHPLOT mpInfoCoords : public mpInfoLayer {
-public:
+ public:
   /** Default constructor */
   mpInfoCoords();
   /** Complete constructor, setting initial rectangle and background brush.
@@ -463,8 +461,8 @@ public:
       @sa mpLayer::Plot */
   virtual void Plot(wxDC &dc, mpWindow &w);
 
-protected:
-  wxString m_content; //!< string holding the coordinates to be drawn.
+ protected:
+  wxString m_content;  //!< string holding the coordinates to be drawn.
 };
 
 /** @class mpInfoLegend
@@ -473,7 +471,7 @@ protected:
    The legend uses the layer name as a label, and displays only layers of type
    mpLAYER_PLOT. */
 class WXDLLIMPEXP_MATHPLOT mpInfoLegend : public mpInfoLayer {
-public:
+ public:
   /** Default constructor */
   mpInfoLegend();
 
@@ -498,7 +496,7 @@ public:
       @sa mpLayer::Plot */
   virtual void Plot(wxDC &dc, mpWindow &w);
 
-protected:
+ protected:
 };
 
 //-----------------------------------------------------------------------------
@@ -566,7 +564,7 @@ protected:
    plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpFX : public mpLayer {
-public:
+ public:
   /** @param name  Label
       @param flags Label alignment, pass one of #mpALIGN_RIGHT, #mpALIGN_CENTER,
      #mpALIGN_LEFT.
@@ -586,8 +584,8 @@ public:
   */
   virtual void Plot(wxDC &dc, mpWindow &w);
 
-protected:
-  int m_flags; //!< Holds label alignment
+ protected:
+  int m_flags;  //!< Holds label alignment
 
   DECLARE_DYNAMIC_CLASS(mpFX)
 };
@@ -601,7 +599,7 @@ protected:
    plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpFY : public mpLayer {
-public:
+ public:
   /** @param name  Label
       @param flags Label alignment, pass one of #mpALIGN_BOTTOM,
      #mpALIGN_CENTER, #mpALIGN_TOP.
@@ -621,8 +619,8 @@ public:
   */
   virtual void Plot(wxDC &dc, mpWindow &w);
 
-protected:
-  int m_flags; //!< Holds label alignment
+ protected:
+  int m_flags;  //!< Holds label alignment
 
   DECLARE_DYNAMIC_CLASS(mpFY)
 };
@@ -639,7 +637,7 @@ protected:
    be plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpFXY : public mpLayer {
-public:
+ public:
   /** @param name  Label
       @param flags Label alignment, pass one of #mpALIGN_NE, #mpALIGN_NW,
      #mpALIGN_SW, #mpALIGN_SE.
@@ -664,8 +662,8 @@ public:
   */
   virtual void Plot(wxDC &dc, mpWindow &w);
 
-protected:
-  int m_flags; //!< Holds label alignment
+ protected:
+  int m_flags;  //!< Holds label alignment
 
   // Data to calculate label positioning
   wxCoord maxDrawX, minDrawX, maxDrawY, minDrawY;
@@ -693,7 +691,7 @@ protected:
    label will be plotted.
 */
 class WXDLLIMPEXP_MATHPLOT mpProfile : public mpLayer {
-public:
+ public:
   /** @param name  Label
       @param flags Label alignment, pass one of #mpALIGN_BOTTOM,
      #mpALIGN_CENTER, #mpALIGN_TOP.
@@ -713,8 +711,8 @@ public:
   */
   virtual void Plot(wxDC &dc, mpWindow &w);
 
-protected:
-  int m_flags; //!< Holds label alignment
+ protected:
+  int m_flags;  //!< Holds label alignment
 
   DECLARE_DYNAMIC_CLASS(mpProfile)
 };
@@ -734,7 +732,7 @@ protected:
     adjusts to view and zoom factor.
 */
 class WXDLLIMPEXP_MATHPLOT mpScaleX : public mpLayer {
-public:
+ public:
   /** Full constructor.
               @param name Label to plot by the ruler
               @param flags Set the position of the scale with respect to the
@@ -743,8 +741,7 @@ public:
      axis ticks, FALSE for drawing the grid.
               @param type mpX_NORMAL for normal labels, mpX_TIME for time axis
      in hours, minutes, seconds. */
-  mpScaleX(wxString name = wxT("X"), int flags = mpALIGN_CENTER,
-           bool ticks = true, unsigned int type = mpX_NORMAL);
+  mpScaleX(wxString name = wxT("X"), int flags = mpALIGN_CENTER, bool ticks = true, unsigned int type = mpX_NORMAL);
 
   /** Layer plot handler.
       This implementation will plot the ruler adjusted to the visible area. */
@@ -787,13 +784,13 @@ public:
   @return The format string */
   const wxString &SetLabelFormat() { return m_labelFormat; };
 
-protected:
-  int m_flags;              //!< Flag for axis alignment
-  bool m_ticks;             //!< Flag to toggle between ticks or grid
-  unsigned int m_labelType; //!< Select labels mode: mpX_NORMAL for normal
-                            //labels, mpX_TIME for time axis in hours, minutes,
-                            //seconds
-  wxString m_labelFormat;   //!< Format string used to print labels
+ protected:
+  int m_flags;               //!< Flag for axis alignment
+  bool m_ticks;              //!< Flag to toggle between ticks or grid
+  unsigned int m_labelType;  //!< Select labels mode: mpX_NORMAL for normal
+                             // labels, mpX_TIME for time axis in hours, minutes,
+                             // seconds
+  wxString m_labelFormat;    //!< Format string used to print labels
 
   DECLARE_DYNAMIC_CLASS(mpScaleX)
 };
@@ -807,13 +804,12 @@ protected:
     adjusts to view and zoom factor.
 */
 class WXDLLIMPEXP_MATHPLOT mpScaleY : public mpLayer {
-public:
+ public:
   /** @param name Label to plot by the ruler
       @param flags Set position of the scale respect to the window.
       @param ticks Select ticks or grid. Give TRUE (default) for drawing axis
      ticks, FALSE for drawing the grid */
-  mpScaleY(wxString name = wxT("Y"), int flags = mpALIGN_CENTER,
-           bool ticks = true);
+  mpScaleY(wxString name = wxT("Y"), int flags = mpALIGN_CENTER, bool ticks = true);
 
   /** Layer plot handler.
       This implementation will plot the ruler adjusted to the visible area.
@@ -848,10 +844,10 @@ public:
   @return The format string */
   const wxString &SetLabelFormat() { return m_labelFormat; };
 
-protected:
-  int m_flags;            //!< Flag for axis alignment
-  bool m_ticks;           //!< Flag to toggle between ticks or grid
-  wxString m_labelFormat; //!< Format string used to print labels
+ protected:
+  int m_flags;             //!< Flag for axis alignment
+  bool m_ticks;            //!< Flag to toggle between ticks or grid
+  wxString m_labelFormat;  //!< Format string used to print labels
 
   DECLARE_DYNAMIC_CLASS(mpScaleY)
 };
@@ -902,11 +898,10 @@ typedef std::deque<mpLayer *> wxLayerList;
 
 */
 class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
-public:
+ public:
   mpWindow() {}
-  mpWindow(wxWindow *parent, wxWindowID id,
-           const wxPoint &pos = wxDefaultPosition,
-           const wxSize &size = wxDefaultSize, long flags = 0);
+  mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize,
+           long flags = 0);
   ~mpWindow();
 
   /** Get reference to context menu of the plot canvas.
@@ -937,8 +932,7 @@ public:
       N.B. Only the layer reference in the mpWindow is deleted, the layer object
      still exists!
   */
-  bool DelLayer(mpLayer *layer, bool alsoDeleteObject = false,
-                bool refreshDisplay = true);
+  bool DelLayer(mpLayer *layer, bool alsoDeleteObject = false, bool refreshDisplay = true);
 
   /** Remove all layers from the plot.
       @param alsoDeleteObject If set to true, the mpLayer objects will be also
@@ -968,7 +962,7 @@ public:
   double GetXscl() { return m_scaleX; }
   double GetScaleX(void) const {
     return m_scaleX;
-  }; // Schaling's method: maybe another method esists with the same name
+  };  // Schaling's method: maybe another method esists with the same name
 
   /** Get current view's Y scale.
       See @ref mpLayer::Plot "rules for coordinate transformation"
@@ -977,7 +971,7 @@ public:
   double GetYscl() const { return m_scaleY; }
   double GetScaleY(void) const {
     return m_scaleY;
-  } // Schaling's method: maybe another method exists with the same name
+  }  // Schaling's method: maybe another method exists with the same name
 
   /** Get current view's X position.
       See @ref mpLayer::Plot "rules for coordinate transformation"
@@ -1022,8 +1016,7 @@ public:
       @param scaleY New scale, must not be 0.
   */
   void SetScaleY(double scaleY) {
-    if (scaleY != 0)
-      m_scaleY = scaleY;
+    if (scaleY != 0) m_scaleY = scaleY;
     UpdateAll();
   }
 
@@ -1065,32 +1058,28 @@ public:
 
   /** Converts mpWindow (screen) pixel coordinates into graph (floating point)
    * coordinates, using current mpWindow position and scale.
-    * @sa p2y,x2p,y2p */
+   * @sa p2y,x2p,y2p */
   //     double p2x(wxCoord pixelCoordX, bool drawOutside = true ); // { return
   //     m_posX + pixelCoordX/m_scaleX; }
-  inline double p2x(wxCoord pixelCoordX) {
-    return m_posX + pixelCoordX / m_scaleX;
-  }
+  inline double p2x(wxCoord pixelCoordX) { return m_posX + pixelCoordX / m_scaleX; }
 
   /** Converts mpWindow (screen) pixel coordinates into graph (floating point)
    * coordinates, using current mpWindow position and scale.
-    * @sa p2x,x2p,y2p */
+   * @sa p2x,x2p,y2p */
   //     double p2y(wxCoord pixelCoordY, bool drawOutside = true ); //{ return
   //     m_posY - pixelCoordY/m_scaleY; }
-  inline double p2y(wxCoord pixelCoordY) {
-    return m_posY - pixelCoordY / m_scaleY;
-  }
+  inline double p2y(wxCoord pixelCoordY) { return m_posY - pixelCoordY / m_scaleY; }
 
   /** Converts graph (floating point) coordinates into mpWindow (screen) pixel
    * coordinates, using current mpWindow position and scale.
-    * @sa p2x,p2y,y2p */
+   * @sa p2x,p2y,y2p */
   //     wxCoord x2p(double x, bool drawOutside = true); // { return (wxCoord) (
   //     (x-m_posX) * m_scaleX); }
   inline wxCoord x2p(double x) { return (wxCoord)((x - m_posX) * m_scaleX); }
 
   /** Converts graph (floating point) coordinates into mpWindow (screen) pixel
    * coordinates, using current mpWindow position and scale.
-    * @sa p2x,p2y,x2p */
+   * @sa p2x,p2y,x2p */
   //     wxCoord y2p(double y, bool drawOutside = true); // { return (wxCoord) (
   //     (m_posY-y) * m_scaleY); }
   inline wxCoord y2p(double y) { return (wxCoord)((m_posY - y) * m_scaleY); }
@@ -1130,21 +1119,20 @@ public:
       as the "desired borders", since this use will be invoked only when
      printing.
   */
-  void Fit(double xMin, double xMax, double yMin, double yMax,
-           wxCoord *printSizeX = NULL, wxCoord *printSizeY = NULL);
+  void Fit(double xMin, double xMax, double yMin, double yMax, wxCoord *printSizeX = NULL, wxCoord *printSizeY = NULL);
 
   /** Zoom into current view and refresh display
-    * @param centerPoint The point (pixel coordinates) that will stay in the
+   * @param centerPoint The point (pixel coordinates) that will stay in the
    * same position on the screen after the zoom (by default, the center of the
    * mpWindow).
-    */
+   */
   void ZoomIn(const wxPoint &centerPoint = wxDefaultPosition);
 
   /** Zoom out current view and refresh display
-    * @param centerPoint The point (pixel coordinates) that will stay in the
+   * @param centerPoint The point (pixel coordinates) that will stay in the
    * same position on the screen after the zoom (by default, the center of the
    * mpWindow).
-    */
+   */
   void ZoomOut(const wxPoint &centerPoint = wxDefaultPosition);
 
   /** Zoom in current view along X and refresh display */
@@ -1182,29 +1170,29 @@ public:
   /** Returns the left-border layer coordinate that the user wants the mpWindow
    * to show (it may be not exactly the actual shown coordinate in the case of
    * locked aspect ratio).
-    * @sa Fit
-    */
+   * @sa Fit
+   */
   double GetDesiredXmin() { return m_desiredXmin; }
 
   /** Returns the right-border layer coordinate that the user wants the mpWindow
    * to show (it may be not exactly the actual shown coordinate in the case of
    * locked aspect ratio).
-    * @sa Fit
-    */
+   * @sa Fit
+   */
   double GetDesiredXmax() { return m_desiredXmax; }
 
   /** Returns the bottom-border layer coordinate that the user wants the
    * mpWindow to show (it may be not exactly the actual shown coordinate in the
    * case of locked aspect ratio).
-    * @sa Fit
-    */
+   * @sa Fit
+   */
   double GetDesiredYmin() { return m_desiredYmin; }
 
   /** Returns the top layer-border coordinate that the user wants the mpWindow
    * to show (it may be not exactly the actual shown coordinate in the case of
    * locked aspect ratio).
-    * @sa Fit
-    */
+   * @sa Fit
+   */
   double GetDesiredYmax() { return m_desiredYmax; }
 
   /** Returns the bounding box coordinates
@@ -1226,12 +1214,12 @@ public:
         @param imageSize Set a size for the output image. Default is the same as
     the screen size
         @param fit Decide whether to fit the plot into the size*/
-  bool SaveScreenshot(const wxString &filename, wxBitmapType type = wxBITMAP_TYPE_BMP,
-                      wxSize imageSize = wxDefaultSize, bool fit = false);
+  bool SaveScreenshot(const wxString &filename, wxBitmapType type = wxBITMAP_TYPE_BMP, wxSize imageSize = wxDefaultSize,
+                      bool fit = false);
 
   /** This value sets the zoom steps whenever the user clicks "Zoom in/out" or
    * performs zoom with the mouse wheel.
-    *  It must be a number above unity. This number is used for zoom in, and its
+   *  It must be a number above unity. This number is used for zoom in, and its
    * inverse for zoom out. Set to 1.5 by default. */
   static double zoomIncrementalFactor;
 
@@ -1300,47 +1288,39 @@ public:
       @param drawColour The colour used to draw all elements in foreground,
       axes excluded
       @param axesColour The colour used to draw axes (but not their labels)*/
-  void SetColourTheme(const wxColour &bgColour, const wxColour &drawColour,
-                      const wxColour &axesColour);
+  void SetColourTheme(const wxColour &bgColour, const wxColour &drawColour, const wxColour &axesColour);
 
   /** Get axes draw colour
           @return reference to axis colour used in theme */
   const wxColour &GetAxesColour() { return m_axColour; };
 
-protected:
-  void OnPaint(
-      wxPaintEvent &event); //!< Paint handler, will plot all attached layers
-  void
-  OnSize(wxSizeEvent &event); //!< Size handler, will update scroll bar sizes
+ protected:
+  void OnPaint(wxPaintEvent &event);  //!< Paint handler, will plot all attached layers
+  void OnSize(wxSizeEvent &event);    //!< Size handler, will update scroll bar sizes
   // void OnScroll2       (wxScrollWinEvent &event); //!< Scroll handler, will
   // move canvas
-  void OnShowPopupMenu(
-      wxMouseEvent &event); //!< Mouse handler, will show context menu
-  void OnMouseRightDown(wxMouseEvent &event); //!< Mouse handler, for detecting
-                                              //when the user drags with the
-                                              //right button or just "clicks"
-                                              //for the menu
-  void OnCenter(wxCommandEvent &event);       //!< Context menu handler
-  void OnFit(wxCommandEvent &event);          //!< Context menu handler
-  void OnZoomIn(wxCommandEvent &event);       //!< Context menu handler
-  void OnZoomOut(wxCommandEvent &event);      //!< Context menu handler
-  void OnLockAspect(wxCommandEvent &event);   //!< Context menu handler
-  void OnMouseHelp(wxCommandEvent &event);    //!< Context menu handler
-  void OnMouseWheel(wxMouseEvent &event);     //!< Mouse handler for the wheel
-  void OnMouseMove(
-      wxMouseEvent &event); //!< Mouse handler for mouse motion (for pan)
-  void
-  OnMouseLeftDown(wxMouseEvent &event); //!< Mouse left click (for rect zoom)
-  void
-  OnMouseLeftRelease(wxMouseEvent &event); //!< Mouse left click (for rect zoom)
-  void OnScrollThumbTrack(
-      wxScrollWinEvent &event); //!< Scroll thumb on scroll bar moving
-  void OnScrollPageUp(wxScrollWinEvent &event);   //!< Scroll page up
-  void OnScrollPageDown(wxScrollWinEvent &event); //!< Scroll page down
-  void OnScrollLineUp(wxScrollWinEvent &event);   //!< Scroll line up
-  void OnScrollLineDown(wxScrollWinEvent &event); //!< Scroll line down
-  void OnScrollTop(wxScrollWinEvent &event);      //!< Scroll to top
-  void OnScrollBottom(wxScrollWinEvent &event);   //!< Scroll to bottom
+  void OnShowPopupMenu(wxMouseEvent &event);         //!< Mouse handler, will show context menu
+  void OnMouseRightDown(wxMouseEvent &event);        //!< Mouse handler, for detecting
+                                                     // when the user drags with the
+                                                     // right button or just "clicks"
+                                                     // for the menu
+  void OnCenter(wxCommandEvent &event);              //!< Context menu handler
+  void OnFit(wxCommandEvent &event);                 //!< Context menu handler
+  void OnZoomIn(wxCommandEvent &event);              //!< Context menu handler
+  void OnZoomOut(wxCommandEvent &event);             //!< Context menu handler
+  void OnLockAspect(wxCommandEvent &event);          //!< Context menu handler
+  void OnMouseHelp(wxCommandEvent &event);           //!< Context menu handler
+  void OnMouseWheel(wxMouseEvent &event);            //!< Mouse handler for the wheel
+  void OnMouseMove(wxMouseEvent &event);             //!< Mouse handler for mouse motion (for pan)
+  void OnMouseLeftDown(wxMouseEvent &event);         //!< Mouse left click (for rect zoom)
+  void OnMouseLeftRelease(wxMouseEvent &event);      //!< Mouse left click (for rect zoom)
+  void OnScrollThumbTrack(wxScrollWinEvent &event);  //!< Scroll thumb on scroll bar moving
+  void OnScrollPageUp(wxScrollWinEvent &event);      //!< Scroll page up
+  void OnScrollPageDown(wxScrollWinEvent &event);    //!< Scroll page down
+  void OnScrollLineUp(wxScrollWinEvent &event);      //!< Scroll line up
+  void OnScrollLineDown(wxScrollWinEvent &event);    //!< Scroll line down
+  void OnScrollTop(wxScrollWinEvent &event);         //!< Scroll to top
+  void OnScrollBottom(wxScrollWinEvent &event);      //!< Scroll to bottom
 
   void DoScrollCalc(const int position, const int orientation);
 
@@ -1350,54 +1330,53 @@ protected:
   void DoZoomOutYCalc(const int staticYpixel);
 
   /** Recalculate global layer bounding box, and save it in m_minX,...
-    * \return true if there is any valid BBox information.
-    */
+   * \return true if there is any valid BBox information.
+   */
   virtual bool UpdateBBox();
 
   // wxList m_layers;    //!< List of attached plot layers
-  wxLayerList m_layers; //!< List of attached plot layers
-  wxMenu m_popmenu;     //!< Canvas' context menu
-  bool m_lockaspect;    //!< Scale aspect is locked or not
+  wxLayerList m_layers;  //!< List of attached plot layers
+  wxMenu m_popmenu;      //!< Canvas' context menu
+  bool m_lockaspect;     //!< Scale aspect is locked or not
   // bool   m_coordTooltip; //!< Selects whether to show coordinate tooltip
-  wxColour m_bgColour; //!< Background Colour
-  wxColour m_fgColour; //!< Foreground Colour
-  wxColour m_axColour; //!< Axes Colour
+  wxColour m_bgColour;  //!< Background Colour
+  wxColour m_fgColour;  //!< Foreground Colour
+  wxColour m_axColour;  //!< Axes Colour
 
-  double m_minX;   //!< Global layer bounding box, left border incl.
-  double m_maxX;   //!< Global layer bounding box, right border incl.
-  double m_minY;   //!< Global layer bounding box, bottom border incl.
-  double m_maxY;   //!< Global layer bounding box, top border incl.
-  double m_scaleX; //!< Current view's X scale
-  double m_scaleY; //!< Current view's Y scale
-  double m_posX;   //!< Current view's X position
-  double m_posY;   //!< Current view's Y position
-  int m_scrX;      //!< Current view's X dimension
-  int m_scrY;      //!< Current view's Y dimension
-  int m_clickedX;  //!< Last mouse click X position, for centering and zooming
-                   //the view
-  int m_clickedY;  //!< Last mouse click Y position, for centering and zooming
-                   //the view
+  double m_minX;    //!< Global layer bounding box, left border incl.
+  double m_maxX;    //!< Global layer bounding box, right border incl.
+  double m_minY;    //!< Global layer bounding box, bottom border incl.
+  double m_maxY;    //!< Global layer bounding box, top border incl.
+  double m_scaleX;  //!< Current view's X scale
+  double m_scaleY;  //!< Current view's Y scale
+  double m_posX;    //!< Current view's X position
+  double m_posY;    //!< Current view's Y position
+  int m_scrX;       //!< Current view's X dimension
+  int m_scrY;       //!< Current view's Y dimension
+  int m_clickedX;   //!< Last mouse click X position, for centering and zooming
+                    // the view
+  int m_clickedY;   //!< Last mouse click Y position, for centering and zooming
+                    // the view
 
   /** These are updated in Fit() only, and may be different from the real
    * borders (layer coordinates) only if lock aspect ratio is true.
-    */
+   */
   double m_desiredXmin, m_desiredXmax, m_desiredYmin, m_desiredYmax;
 
   int m_marginTop, m_marginRight, m_marginBottom, m_marginLeft;
 
-  int m_last_lx, m_last_ly;     //!< For double buffering
-  wxMemoryDC m_buff_dc;         //!< For double buffering
-  wxBitmap *m_buff_bmp;         //!< For double buffering
-  bool m_enableMouseNavigation; //!< For pan/zoom with the mouse.
+  int m_last_lx, m_last_ly;      //!< For double buffering
+  wxMemoryDC m_buff_dc;          //!< For double buffering
+  wxBitmap *m_buff_bmp;          //!< For double buffering
+  bool m_enableMouseNavigation;  //!< For pan/zoom with the mouse.
   bool m_mouseMovedAfterRightClick;
   long m_mouseRClick_X,
-      m_mouseRClick_Y; //!< For the right button "drag" feature
+      m_mouseRClick_Y;  //!< For the right button "drag" feature
   int m_mouseLClick_X,
-      m_mouseLClick_Y; //!< Starting coords for rectangular zoom selection
+      m_mouseLClick_Y;  //!< Starting coords for rectangular zoom selection
   bool m_enableScrollBars;
   int m_scrollX, m_scrollY;
-  mpInfoLayer *
-      m_movingInfoLayer; //!< For moving info layers over the window area
+  mpInfoLayer *m_movingInfoLayer;  //!< For moving info layers over the window area
 
   DECLARE_DYNAMIC_CLASS(mpWindow)
   DECLARE_EVENT_TABLE()
@@ -1430,7 +1409,7 @@ protected:
      (Added: Jose Luis Blanco, AGO-2007)
 */
 class WXDLLIMPEXP_MATHPLOT mpFXYVector : public mpFXY {
-public:
+ public:
   /** @param name  Label
       @param flags Label alignment, pass one of #mpALIGN_NE, #mpALIGN_NW,
      #mpALIGN_SW, #mpALIGN_SE.
@@ -1444,22 +1423,24 @@ public:
   */
   void SetData(const std::vector<double> &xs, const std::vector<double> &ys);
 
+  void GetData(std::vector<double> &xs, std::vector<double> &ys);
+
   /** Clears all the data, leaving the layer empty.
-    * @sa SetData
-    */
+   * @sa SetData
+   */
   void Clear();
 
-protected:
+ protected:
   /** The internal copy of the set of data to draw.
-    */
+   */
   std::vector<double> m_xs, m_ys;
 
   /** The internal counter for the "GetNextXY" interface
-    */
+   */
   size_t m_index;
 
   /** Loaded at SetData
-    */
+   */
   double m_minX, m_maxX, m_minY, m_maxY;
 
   /** Rewind value enumeration with mpFXY::GetNextXY.
@@ -1475,22 +1456,22 @@ protected:
   bool GetNextXY(double &x, double &y);
 
   /** Returns the actual minimum X data (loaded in SetData).
-    */
+   */
   double GetMinX() { return m_minX; }
 
   /** Returns the actual minimum Y data (loaded in SetData).
-    */
+   */
   double GetMinY() { return m_minY; }
 
   /** Returns the actual maximum X data (loaded in SetData).
-    */
+   */
   double GetMaxX() { return m_maxX; }
 
   /** Returns the actual maximum Y data (loaded in SetData).
-    */
+   */
   double GetMaxY() { return m_maxY; }
 
-  int m_flags; //!< Holds label alignment
+  int m_flags;  //!< Holds label alignment
 
   DECLARE_DYNAMIC_CLASS(mpFXYVector)
 };
@@ -1506,7 +1487,7 @@ on the plot reguardless of the other layers location and scaling
 factors.
 */
 class WXDLLIMPEXP_MATHPLOT mpText : public mpLayer {
-public:
+ public:
   /** @param name text to be drawn in the plot
       @param offsetx holds offset for the X location in percentage (0-100)
       @param offsety holds offset for the Y location in percentage (0-100) */
@@ -1519,9 +1500,9 @@ public:
   /** mpText should not be used for scaling decisions. */
   virtual bool HasBBox() { return FALSE; }
 
-protected:
-  int m_offsetx; //!< Holds offset for X in percentage
-  int m_offsety; //!< Holds offset for Y in percentage
+ protected:
+  int m_offsetx;  //!< Holds offset for X in percentage
+  int m_offsety;  //!< Holds offset for Y in percentage
 
   DECLARE_DYNAMIC_CLASS(mpText)
 };
@@ -1535,16 +1516,15 @@ protected:
     to print mppWindow objects.
 */
 class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
-public:
-  mpPrintout(mpWindow *drawWindow,
-             const wxChar *title = _T("wxMathPlot print output"));
-  virtual ~mpPrintout(){};
+ public:
+  mpPrintout(mpWindow *drawWindow, const wxChar *title = _T("wxMathPlot print output"));
+  virtual ~mpPrintout() {};
 
   void SetDrawState(bool drawState) { drawn = drawState; };
   bool OnPrintPage(int page);
   bool HasPage(int page);
 
-private:
+ private:
   mpPrintout() : drawn(false), plotWindow(NULL) {};
   bool drawn;
   mpWindow *plotWindow;
@@ -1555,25 +1535,23 @@ private:
 //-----------------------------------------------------------------------------
 /** This virtual class represents objects that can be moved to an arbitrary 2D
  * location+rotation.
-  *  The current transformation is set through SetCoordinateBase.
-  *  To ease the implementation of descendent classes, mpMovableObject will
-  *  be in charge of Bounding Box computation and layer rendering, assuming that
-  *  the object updates its shape in m_shape_xs & m_shape_ys.
-  */
+ *  The current transformation is set through SetCoordinateBase.
+ *  To ease the implementation of descendent classes, mpMovableObject will
+ *  be in charge of Bounding Box computation and layer rendering, assuming that
+ *  the object updates its shape in m_shape_xs & m_shape_ys.
+ */
 class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
-public:
+ public:
   /** Default constructor (sets location and rotation to (0,0,0))
-    */
-  mpMovableObject()
-      : m_reference_x(0), m_reference_y(0), m_reference_phi(0), m_shape_xs(0),
-        m_shape_ys(0) {
+   */
+  mpMovableObject() : m_reference_x(0), m_reference_y(0), m_reference_phi(0), m_shape_xs(0), m_shape_ys(0) {
     m_type = mpLAYER_PLOT;
   }
 
-  virtual ~mpMovableObject(){};
+  virtual ~mpMovableObject() {};
 
   /** Get the current coordinate transformation.
-    */
+   */
   void GetCoordinateBase(double &x, double &y, double &phi) const {
     x = m_reference_x;
     y = m_reference_y;
@@ -1581,7 +1559,7 @@ public:
   }
 
   /** Set the coordinate transformation (phi in radians, 0 means no rotation).
-    */
+   */
   void SetCoordinateBase(double x, double y, double phi = 0) {
     m_reference_x = x;
     m_reference_y = y;
@@ -1593,62 +1571,62 @@ public:
   virtual bool HasBBox() { return m_trans_shape_xs.size() != 0; }
 
   /** Get inclusive left border of bounding box.
-  */
+   */
   virtual double GetMinX() { return m_bbox_min_x; }
 
   /** Get inclusive right border of bounding box.
-  */
+   */
   virtual double GetMaxX() { return m_bbox_max_x; }
 
   /** Get inclusive bottom border of bounding box.
-  */
+   */
   virtual double GetMinY() { return m_bbox_min_y; }
 
   /** Get inclusive top border of bounding box.
-  */
+   */
   virtual double GetMaxY() { return m_bbox_max_y; }
 
   virtual void Plot(wxDC &dc, mpWindow &w);
 
   /** Set label axis alignment.
-    *  @param align alignment (choose between mpALIGN_NE, mpALIGN_NW,
+   *  @param align alignment (choose between mpALIGN_NE, mpALIGN_NW,
    * mpALIGN_SW, mpALIGN_SE
-    */
+   */
   void SetAlign(int align) { m_flags = align; };
 
-protected:
-  int m_flags; //!< Holds label alignment
+ protected:
+  int m_flags;  //!< Holds label alignment
 
   /** The coordinates of the object (orientation "phi" is in radians).
-    */
+   */
   double m_reference_x, m_reference_y, m_reference_phi;
 
   /** A method for 2D translation and rotation, using the current transformation
    * stored in m_reference_x,m_reference_y,m_reference_phi.
-    */
+   */
   void TranslatePoint(double x, double y, double &out_x, double &out_y);
 
   /** This contains the object points, in local coordinates (to be transformed
    * by the current transformation).
-    */
+   */
   std::vector<double> m_shape_xs, m_shape_ys;
 
   /** The buffer for the translated & rotated points (to avoid recomputing them
-    *with each mpWindow refresh).
-    *
-    */
+   *with each mpWindow refresh).
+   *
+   */
   std::vector<double> m_trans_shape_xs, m_trans_shape_ys;
 
   /** The precomputed bounding box:
-    * @sa ShapeUpdated
-    */
+   * @sa ShapeUpdated
+   */
   double m_bbox_min_x, m_bbox_max_x, m_bbox_min_y, m_bbox_max_y;
 
   /** Must be called by the descendent class after updating the shape
    * (m_shape_xs/ys), or when the transformation changes.
-    *  This method updates the buffers m_trans_shape_xs/ys, and the precomputed
+   *  This method updates the buffers m_trans_shape_xs/ys, and the precomputed
    * bounding box.
-    */
+   */
   void ShapeUpdated();
 };
 
@@ -1656,30 +1634,28 @@ protected:
 // mpCovarianceEllipse  - provided by Jose Luis Blanco
 //-----------------------------------------------------------------------------
 /** A 2D ellipse, described by a 2x2 covariance matrix.
-  *  The relation between the multivariate Gaussian confidence interval and
-  *   the "quantiles" in this class is:
-  *     - 1 : 68.27% confidence interval
-  *     - 2 : 95.45%
-  *     - 3 : 99.73%
-  *     - 4 : 99.994%
-  * For example, see
-  *http://en.wikipedia.org/wiki/Normal_distribution#Standard_deviation_and_confidence_intervals
-  *
-  * The ellipse will be always centered at the origin. Use
-  *mpMovableObject::SetCoordinateBase to move it.
-  */
+ *  The relation between the multivariate Gaussian confidence interval and
+ *   the "quantiles" in this class is:
+ *     - 1 : 68.27% confidence interval
+ *     - 2 : 95.45%
+ *     - 3 : 99.73%
+ *     - 4 : 99.994%
+ * For example, see
+ *http://en.wikipedia.org/wiki/Normal_distribution#Standard_deviation_and_confidence_intervals
+ *
+ * The ellipse will be always centered at the origin. Use
+ *mpMovableObject::SetCoordinateBase to move it.
+ */
 class WXDLLIMPEXP_MATHPLOT mpCovarianceEllipse : public mpMovableObject {
-public:
+ public:
   /** Default constructor.
-    * Initializes to a unity diagonal covariance matrix, a 95% confidence
+   * Initializes to a unity diagonal covariance matrix, a 95% confidence
    * interval (2 sigmas), 32 segments, and a continuous plot
    * (m_continuous=true).
-    */
-  mpCovarianceEllipse(double cov_00 = 1, double cov_11 = 1, double cov_01 = 0,
-                      double quantiles = 2, int segments = 32,
+   */
+  mpCovarianceEllipse(double cov_00 = 1, double cov_11 = 1, double cov_01 = 0, double quantiles = 2, int segments = 32,
                       const wxString &layerName = wxT(""))
-      : m_cov_00(cov_00), m_cov_11(cov_11), m_cov_01(cov_01),
-        m_quantiles(quantiles), m_segments(segments) {
+      : m_cov_00(cov_00), m_cov_11(cov_11), m_cov_01(cov_01), m_quantiles(quantiles), m_segments(segments) {
     m_continuous = true;
     m_name = layerName;
     RecalculateShape();
@@ -1692,7 +1668,7 @@ public:
 
   /** Set how many "quantiles" to draw, that is, the confidence interval of the
    * ellipse (see above).
-    */
+   */
   void SetQuantiles(double q) {
     m_quantiles = q;
     RecalculateShape();
@@ -1702,16 +1678,15 @@ public:
   int GetSegments() const { return m_segments; }
 
   /** Returns the elements of the current covariance matrix:
-    */
-  void GetCovarianceMatrix(double &cov_00, double &cov_01,
-                           double &cov_11) const {
+   */
+  void GetCovarianceMatrix(double &cov_00, double &cov_01, double &cov_11) const {
     cov_00 = m_cov_00;
     cov_01 = m_cov_01;
     cov_11 = m_cov_11;
   }
 
   /** Changes the covariance matrix:
-    */
+   */
   void SetCovarianceMatrix(double cov_00, double cov_01, double cov_11) {
     m_cov_00 = cov_00;
     m_cov_01 = cov_01;
@@ -1719,20 +1694,20 @@ public:
     RecalculateShape();
   }
 
-protected:
+ protected:
   /** The elements of the matrix (only 3 since cov(0,1)=cov(1,0) in any positive
    * definite matrix).
-    */
+   */
   double m_cov_00, m_cov_11, m_cov_01;
   double m_quantiles;
 
   /** The number of line segments that build up the ellipse.
-    */
+   */
   int m_segments;
 
   /** Called to update the m_shape_xs, m_shape_ys vectors, whenever a parameter
    * changes.
-    */
+   */
   void RecalculateShape();
 };
 
@@ -1740,15 +1715,15 @@ protected:
 // mpPolygon - provided by Jose Luis Blanco
 //-----------------------------------------------------------------------------
 /** An arbitrary polygon, descendant of mpMovableObject.
-  *  Use "setPoints" to set the list of N points. This class also can draw
+ *  Use "setPoints" to set the list of N points. This class also can draw
  * non-closed polygons by
-  *   passing the appropriate parameters to "setPoints". To draw a point-cloud,
+ *   passing the appropriate parameters to "setPoints". To draw a point-cloud,
  * call "SetContinuity(false)".
-  */
+ */
 class WXDLLIMPEXP_MATHPLOT mpPolygon : public mpMovableObject {
-public:
+ public:
   /** Default constructor.
-    */
+   */
   mpPolygon(const wxString &layerName = wxT("")) {
     m_continuous = true;
     m_name = layerName;
@@ -1757,13 +1732,12 @@ public:
   virtual ~mpPolygon() {}
 
   /** Set the points in the polygon.
-    * @param points_xs  The X coordinates of the points.
-    * @param points_ys  The Y coordinates of the points.
-    * @param closedShape If set to true, an additional segment will be added
+   * @param points_xs  The X coordinates of the points.
+   * @param points_ys  The Y coordinates of the points.
+   * @param closedShape If set to true, an additional segment will be added
    * from the last to the first point.
-    */
-  void setPoints(const std::vector<double> &points_xs,
-                 const std::vector<double> &points_ys, bool closedShape = true);
+   */
+  void setPoints(const std::vector<double> &points_xs, const std::vector<double> &points_ys, bool closedShape = true);
 };
 
 //-----------------------------------------------------------------------------
@@ -1771,70 +1745,69 @@ public:
 //-----------------------------------------------------------------------------
 /** This virtual class represents objects that can be moved to an arbitrary 2D
  * location+rotation.
-  *  The current transformation is set through SetCoordinateBase.
-  *  To ease the implementation of descendent classes, mpMovableObject will
-  *  be in charge of Bounding Box computation and layer render, assuming that
-  *  the object updates its shape in m_shape_xs & m_shape_ys.
-  */
+ *  The current transformation is set through SetCoordinateBase.
+ *  To ease the implementation of descendent classes, mpMovableObject will
+ *  be in charge of Bounding Box computation and layer render, assuming that
+ *  the object updates its shape in m_shape_xs & m_shape_ys.
+ */
 class WXDLLIMPEXP_MATHPLOT mpBitmapLayer : public mpLayer {
-public:
+ public:
   /** Default constructor.
-    */
+   */
   mpBitmapLayer() {
     m_min_x = m_max_x = m_min_y = m_max_y = 0;
     m_validImg = false;
     m_type = mpLAYER_BITMAP;
   }
 
-  virtual ~mpBitmapLayer(){};
+  virtual ~mpBitmapLayer() {};
 
   /** Returns a copy of the current bitmap assigned to the layer.
-    */
+   */
   void GetBitmapCopy(wxImage &outBmp) const;
 
   /** Change the bitmap associated with the layer (to update the screen, refresh
    * the mpWindow).
-    *  @param inBmp The bitmap to associate. A copy is made, thus it can be
+   *  @param inBmp The bitmap to associate. A copy is made, thus it can be
    * released after calling this.
-    *  @param x The left corner X coordinate (in plot units).
-    *  @param y The top corner Y coordinate (in plot units).
-    *  @param lx The width in plot units.
-    *  @param ly The height in plot units.
-    */
-  void SetBitmap(const wxImage &inBmp, double x, double y, double lx,
-                 double ly);
+   *  @param x The left corner X coordinate (in plot units).
+   *  @param y The top corner Y coordinate (in plot units).
+   *  @param lx The width in plot units.
+   *  @param ly The height in plot units.
+   */
+  void SetBitmap(const wxImage &inBmp, double x, double y, double lx, double ly);
 
   virtual bool HasBBox() { return true; }
 
   /** Get inclusive left border of bounding box.
-  */
+   */
   virtual double GetMinX() { return m_min_x; }
 
   /** Get inclusive right border of bounding box.
-  */
+   */
   virtual double GetMaxX() { return m_max_x; }
 
   /** Get inclusive bottom border of bounding box.
-  */
+   */
   virtual double GetMinY() { return m_min_y; }
 
   /** Get inclusive top border of bounding box.
-  */
+   */
   virtual double GetMaxY() { return m_max_y; }
 
   virtual void Plot(wxDC &dc, mpWindow &w);
 
   /** Set label axis alignment.
-    *  @param align alignment (choose between mpALIGN_NE, mpALIGN_NW,
+   *  @param align alignment (choose between mpALIGN_NE, mpALIGN_NW,
    * mpALIGN_SW, mpALIGN_SE
-    */
+   */
   void SetAlign(int align) { m_flags = align; };
 
-protected:
-  int m_flags; //!< Holds label alignment
+ protected:
+  int m_flags;  //!< Holds label alignment
 
   /** The internal copy of the Bitmap:
-    */
+   */
   wxImage m_bitmap;
   wxBitmap m_scaledBitmap;
   wxCoord m_scaledBitmap_offset_x, m_scaledBitmap_offset_y;
@@ -1842,10 +1815,10 @@ protected:
   bool m_validImg;
 
   /** The shape of the bitmap:
-    */
+   */
   double m_min_x, m_max_x, m_min_y, m_max_y;
 };
 
 /*@}*/
 
-#endif // _MP_MATHPLOT_H_
+#endif  // _MP_MATHPLOT_H_
