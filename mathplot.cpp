@@ -17,6 +17,7 @@
 #include "mathplot.h"
 
 #include <wx/bmpbuttn.h>
+#include <wx/brush.h>
 #include <wx/colour.h>
 #include <wx/cursor.h>
 #include <wx/dcbuffer.h>
@@ -28,6 +29,7 @@
 #include <wx/module.h>
 #include <wx/msgdlg.h>
 #include <wx/object.h>
+#include <wx/peninfobase.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/tipwin.h>
@@ -77,10 +79,9 @@ mpLayer::mpLayer() : m_type(mpLAYER_UNDEF) {
 wxBitmap mpLayer::GetColourSquare(int side) {
   wxBitmap square(side, side, -1);
   wxColour filler = m_pen.GetColour();
-  wxBrush brush(filler, wxSOLID);
   wxMemoryDC dc;
   dc.SelectObject(square);
-  dc.SetBackground(brush);
+  dc.SetBackground(wxBrush(filler, wxBRUSHSTYLE_SOLID));
   dc.Clear();
   dc.SelectObject(wxNullBitmap);
   return square;
@@ -111,7 +112,7 @@ mpInfoLayer::mpInfoLayer(wxRect rect, const wxBrush *brush) : m_dim(rect) {
 
 mpInfoLayer::~mpInfoLayer() {}
 
-void mpInfoLayer::UpdateInfo(mpWindow &w, wxEvent &event) {}
+void mpInfoLayer::UpdateInfo(mpWindow &, wxEvent &) {}
 
 bool mpInfoLayer::Inside(wxPoint &point) { return m_dim.Contains(point); }
 
@@ -224,7 +225,7 @@ mpInfoLegend::mpInfoLegend(wxRect rect, const wxBrush *brush) : mpInfoLayer(rect
 
 mpInfoLegend::~mpInfoLegend() {}
 
-void mpInfoLegend::UpdateInfo(mpWindow &w, wxEvent &event) {}
+void mpInfoLegend::UpdateInfo(mpWindow &, wxEvent &) {}
 
 void mpInfoLegend::Plot(wxDC &dc, mpWindow &w) {
   if (m_visible) {
@@ -753,7 +754,7 @@ void mpScaleX::Plot(wxDC &dc, mpWindow &w) {
           else
             dc.DrawLine(p, orgy, p, orgy + 4);
         } else {  // draw grid dotted lines
-          m_pen.SetStyle(wxDOT);
+          m_pen.SetStyle(wxPENSTYLE_DOT);
           dc.SetPen(m_pen);
           if ((m_flags == mpALIGN_BOTTOM) && !m_drawOutsideMargins) {
             dc.DrawLine(p, orgy + 4, p, minYpx);
@@ -764,7 +765,7 @@ void mpScaleX::Plot(wxDC &dc, mpWindow &w) {
               dc.DrawLine(p, 0 /*-w.GetScrY()*/, p, w.GetScrY());
             }
           }
-          m_pen.SetStyle(wxSOLID);
+          m_pen.SetStyle(wxPENSTYLE_SOLID);
           dc.SetPen(m_pen);
         }
         // Write ticks labels in s string
@@ -995,7 +996,7 @@ void mpScaleY::Plot(wxDC &dc, mpWindow &w) {
             dc.DrawLine(orgx - 4, p, orgx, p);  //( orgx, p, orgx+4, p);
           }
         } else {
-          m_pen.SetStyle(wxDOT);
+          m_pen.SetStyle(wxPENSTYLE_DOT);
           dc.SetPen(m_pen);
           if ((m_flags == mpALIGN_LEFT) && !m_drawOutsideMargins) {
             dc.DrawLine(orgx - 4, p, endPx, p);
@@ -1006,7 +1007,7 @@ void mpScaleY::Plot(wxDC &dc, mpWindow &w) {
               dc.DrawLine(0 /*-w.GetScrX()*/, p, w.GetScrX(), p);
             }
           }
-          m_pen.SetStyle(wxSOLID);
+          m_pen.SetStyle(wxPENSTYLE_SOLID);
           dc.SetPen(m_pen);
         }
         // Print ticks labels
@@ -1242,8 +1243,7 @@ void mpWindow::OnMouseMove(wxMouseEvent &event) {
     if (event.m_leftDown) {
       if (m_movingInfoLayer == NULL) {
         wxClientDC dc(this);
-        wxPen pen(*wxBLACK, 1, wxDOT);
-        dc.SetPen(pen);
+        dc.SetPen(wxPen(*wxBLACK, 1, wxPENSTYLE_DOT));
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         dc.DrawRectangle(m_mouseLClick_X, m_mouseLClick_Y, event.GetX() - m_mouseLClick_X,
                          event.GetY() - m_mouseLClick_Y);
@@ -2369,7 +2369,7 @@ void mpText::Plot(wxDC &dc, mpWindow &w) {
 //-----------------------------------------------------------------------------
 
 mpPrintout::mpPrintout(mpWindow *drawWindow, const wxChar *title)
-    : drawn(false), plotWindow(drawWindow), wxPrintout(title) {}
+    : wxPrintout(title), drawn(false), plotWindow(drawWindow) {}
 
 bool mpPrintout::OnPrintPage(int page) {
   wxDC *trgDc = GetDC();

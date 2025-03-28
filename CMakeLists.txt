@@ -14,6 +14,11 @@ add_library(wxmathplot STATIC mathplot.cpp mathplot.h)
 
 target_link_libraries(wxmathplot PUBLIC ${wxWidgets_LIBRARIES})
 
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    #-Wconversion -Wfloat-equal -Wundef -Wnon-virtual-dtor
+    target_compile_options(wxmathplot PRIVATE -Wall -Wpedantic -Wextra -Werror)
+endif()
+
 target_include_directories(wxmathplot PUBLIC ${wxWidgets_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(EXECUTABLE_SOURCES 

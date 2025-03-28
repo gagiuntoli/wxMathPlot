@@ -153,7 +153,7 @@ class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
  public:
   mpLayer();
 
-  virtual ~mpLayer() {};
+  virtual ~mpLayer(){};
 
   /** Check whether this layer has a bounding box.
       The default implementation returns \a TRUE. Override and return
@@ -1518,14 +1518,14 @@ class WXDLLIMPEXP_MATHPLOT mpText : public mpLayer {
 class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
  public:
   mpPrintout(mpWindow *drawWindow, const wxChar *title = _T("wxMathPlot print output"));
-  virtual ~mpPrintout() {};
+  virtual ~mpPrintout(){};
 
   void SetDrawState(bool drawState) { drawn = drawState; };
   bool OnPrintPage(int page);
   bool HasPage(int page);
 
  private:
-  mpPrintout() : drawn(false), plotWindow(NULL) {};
+  mpPrintout() : drawn(false), plotWindow(NULL){};
   bool drawn;
   mpWindow *plotWindow;
 };
@@ -1548,7 +1548,7 @@ class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
     m_type = mpLAYER_PLOT;
   }
 
-  virtual ~mpMovableObject() {};
+  virtual ~mpMovableObject(){};
 
   /** Get the current coordinate transformation.
    */
@@ -1760,7 +1760,7 @@ class WXDLLIMPEXP_MATHPLOT mpBitmapLayer : public mpLayer {
     m_type = mpLAYER_BITMAP;
   }
 
-  virtual ~mpBitmapLayer() {};
+  virtual ~mpBitmapLayer(){};
 
   /** Returns a copy of the current bitmap assigned to the layer.
    */
