@@ -455,10 +455,10 @@ void mpFXY::Plot(wxDC &dc, mpWindow &w) {
     // positioning
     Rewind();
     GetNextXY(x, y);
-    maxDrawX = x;
-    minDrawX = x;
-    maxDrawY = y;
-    minDrawY = y;
+    maxDrawX = static_cast<int>(x);
+    minDrawX = static_cast<int>(x);
+    maxDrawY = static_cast<int>(y);
+    minDrawY = static_cast<int>(y);
     // drawnPoints = 0;
     Rewind();
 
@@ -510,21 +510,21 @@ void mpFXY::Plot(wxDC &dc, mpWindow &w) {
           if (!outUp && !outDown) {
             if (c1 != c0) {
               if (c0 < minYpx) {
-                x0 = (int)(((float)(minYpx - c0)) / ((float)(c1 - c0)) * (x1 - x0)) + x0;
+                x0 = (int)(((float)(minYpx - c0)) / ((float)(c1 - c0)) * static_cast<float>(x1 - x0)) + x0;
                 c0 = minYpx;
               }
               if (c0 > maxYpx) {
-                x0 = (int)(((float)(maxYpx - c0)) / ((float)(c1 - c0)) * (x1 - x0)) + x0;
+                x0 = (int)(((float)(maxYpx - c0)) / ((float)(c1 - c0)) * static_cast<float>(x1 - x0)) + x0;
                 // wxLogDebug(wxT("old x0 = %d, new x0 = %d"), x0, newX0);
                 // x0 = newX0;
                 c0 = maxYpx;
               }
               if (c1 < minYpx) {
-                x1 = (int)(((float)(minYpx - c0)) / ((float)(c1 - c0)) * (x1 - x0)) + x0;
+                x1 = (int)(((float)(minYpx - c0)) / ((float)(c1 - c0)) * static_cast<float>(x1 - x0)) + x0;
                 c1 = minYpx;
               }
               if (c1 > maxYpx) {
-                x1 = (int)(((float)(maxYpx - c0)) / ((float)(c1 - c0)) * (x1 - x0)) + x0;
+                x1 = (int)(((float)(maxYpx - c0)) / ((float)(c1 - c0)) * static_cast<float>(x1 - x0)) + x0;
                 // wxLogDebug(wxT("old x0 = %d, old x1 = %d, new x1 = %d, c0 =
                 // %d, c1 = %d, maxYpx = %d"), x0, x1, newX1, c0, c1, maxYpx);
                 // x1 = newX1;
@@ -533,11 +533,11 @@ void mpFXY::Plot(wxDC &dc, mpWindow &w) {
             }
             if (x1 != x0) {
               if (x0 < startPx) {
-                c0 = (int)(((float)(startPx - x0)) / ((float)(x1 - x0)) * (c1 - c0)) + c0;
+                c0 = (int)(((float)(startPx - x0)) / ((float)(x1 - x0)) * static_cast<float>(c1 - c0)) + c0;
                 x0 = startPx;
               }
               if (x1 > endPx) {
-                c1 = (int)(((float)(endPx - x0)) / ((float)(x1 - x0)) * (c1 - c0)) + c0;
+                c1 = (int)(((float)(endPx - x0)) / ((float)(x1 - x0)) * static_cast<float>(c1 - c0)) + c0;
                 x1 = endPx;
               }
             }

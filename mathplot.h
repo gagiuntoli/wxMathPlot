@@ -1161,7 +1161,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
 
   /** Counts the number of plot layers, whether or not they have a bounding box.
       \return The number of layers in the mpWindow. */
-  unsigned int CountAllLayers() { return m_layers.size(); };
+  unsigned int CountAllLayers() { return static_cast<unsigned int>(m_layers.size()); };
 
   /** Draws the mpWindow on a page for printing
       \param print the mpPrintout where to print the graph */
@@ -1370,7 +1370,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow : public wxWindow {
   wxBitmap *m_buff_bmp;          //!< For double buffering
   bool m_enableMouseNavigation;  //!< For pan/zoom with the mouse.
   bool m_mouseMovedAfterRightClick;
-  long m_mouseRClick_X,
+  int m_mouseRClick_X,
       m_mouseRClick_Y;  //!< For the right button "drag" feature
   int m_mouseLClick_X,
       m_mouseLClick_Y;  //!< Starting coords for rectangular zoom selection
