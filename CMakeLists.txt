@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.30)
 project(wxMathPlot)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -6,21 +6,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(WXMATHPLOT_COMPILE_EXECUTABLES "Compile executables" ON)
 
-find_package(wxWidgets REQUIRED COMPONENTS core base)
-
-add_library(wxmathplot STATIC mathplot.cpp mathplot.h)
-
-target_link_libraries(wxmathplot PUBLIC wxWidgets::wxWidgets)
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /RTC1")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+  add_compile_options(
+    /W2  # /W[1-4] enables level 1-4 warnings,
+    #/WX  # /WX treats warnings as errors
+    # /permissive- # stricter standard compliance (more portable)
+    )
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   #-Wfloat-equal -Wundef -Wnon-virtual-dtor
   target_compile_options(wxmathplot PRIVATE
     -Wall -Wpedantic -Wextra -Wconversion
     -Werror
     )
-endif()
+endif(MSVC)
 
-target_include_directories(wxmathplot PUBLIC ${wxWidgets_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+find_package(wxWidgets CONFIG REQUIRED)
+
+add_library(wxmathplot STATIC mathplot.cpp mathplot.h)
+
+target_link_libraries(wxmathplot PUBLIC wxWidgets::wxWidgets)
+target_include_directories(wxmathplot PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(EXECUTABLE_SOURCES
   samples/sample1/mp1.cpp

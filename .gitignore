@@ -32,3 +32,5 @@ build/
 GPATH
 GRTAGS
 GTAGS
+
+CMakeUserPresets.json
