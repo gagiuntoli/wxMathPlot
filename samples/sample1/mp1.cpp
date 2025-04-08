@@ -278,7 +278,6 @@ void MyFrame::OnAlignXAxis(wxCommandEvent &WXUNUSED(event)) {
   temp.sprintf(wxT("axesPos = %d\n"), axesPos);
   m_log->AppendText(temp);
   mpScaleX *xaxis = ((mpScaleX *)(m_plot->GetLayer(0)));
-  mpScaleY *yaxis = ((mpScaleY *)(m_plot->GetLayer(1)));
   if (axesPos[0] == 0) {
     xaxis->SetAlign(mpALIGN_BORDER_BOTTOM);
     m_plot->SetMarginTop(0);
@@ -316,7 +315,6 @@ void MyFrame::OnAlignYAxis(wxCommandEvent &WXUNUSED(event)) {
   wxString temp;
   temp.sprintf(wxT("axesPos = %d\n"), axesPos);
   m_log->AppendText(temp);
-  mpScaleX *xaxis = ((mpScaleX *)(m_plot->GetLayer(0)));
   mpScaleY *yaxis = ((mpScaleY *)(m_plot->GetLayer(1)));
   if (axesPos[1] == 0) {
     //((mpScaleY*)(m_plot->GetLayer(1)))->SetAlign(mpALIGN_BORDER_LEFT);
@@ -375,11 +373,8 @@ void MyFrame::OnToggleInfoLayer(wxCommandEvent &event) {
   event.Skip();
 }
 
-void MyFrame::OnBlackTheme(wxCommandEvent &event) {
-  // wxColor black(0,0,0);
-  // wxColor white(255,255,255);
+void MyFrame::OnBlackTheme(wxCommandEvent &) {
   wxColour grey(96, 96, 96);
-  /*wxBrush* brush = new wxBrush(*wxTRANSPARENT_BRUSH)*/;
   m_plot->SetColourTheme(*wxBLACK, *wxWHITE, grey);
   m_plot->UpdateAll();
 }

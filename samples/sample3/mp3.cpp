@@ -202,7 +202,7 @@ void MyFrame::OnAbout(wxCommandEvent &WXUNUSED(event)) {
   wxMessageBox(wxT("wxWidgets mathplot sample #3\n(c) 2007 David Schalig, Davide Rondini, Jose Luis Blanco"));
 }
 
-void MyFrame::OnTimer(wxTimerEvent &event) {
+void MyFrame::OnTimer(wxTimerEvent &) {
   mpMovableObject *obj = (mpMovableObject *)m_plot->GetLayerByName(wxT("car"));
   if (obj) {
     double x, y, phi, v, w, At = m_Timer->GetInterval() * 0.001;

@@ -16,13 +16,13 @@ if(MSVC)
     )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   #-Wfloat-equal -Wundef -Wnon-virtual-dtor
-  target_compile_options(wxmathplot PRIVATE
-    -Wall -Wpedantic -Wextra -Wconversion
-    -Werror
-    )
+  add_compile_options(
+	  -Wall -Wpedantic -Wextra -Wconversion
+	  -Werror
+	  )
 endif(MSVC)
 
-find_package(wxWidgets CONFIG REQUIRED)
+find_package(wxWidgets REQUIRED COMPONENTS core base)
 
 add_library(wxmathplot STATIC mathplot.cpp mathplot.h)
 
