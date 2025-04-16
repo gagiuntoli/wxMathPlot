@@ -72,31 +72,11 @@
 #define WXDLLIMPEXP_DATA_MATHPLOT(type) type
 #endif
 
-#include <vector>
-
-// #include <wx/wx.h>
-#include <wx/dcmemory.h>
-#include <wx/defs.h>
-#include <wx/dynarray.h>
-#include <wx/event.h>
-#include <wx/image.h>
-#include <wx/menu.h>
-#include <wx/pen.h>
 #include <wx/print.h>
-#include <wx/scrolwin.h>
-#include <wx/string.h>
+#include <wx/wx.h>
 
 #include <deque>
-
-// For memory leak debug
-#ifdef _WINDOWS
-#ifdef _DEBUG
-#include <crtdbg.h>
-#define DEBUG_NEW new (_NORMAL_BLOCK, __FILE__, __LINE__)
-#else
-#define DEBUG_NEW new
-#endif  // _DEBUG
-#endif  // _WINDOWS
+#include <vector>
 
 // Separation for axes when set close to border
 #define X_BORDER_SEPARATION 40
@@ -153,7 +133,7 @@ class WXDLLIMPEXP_MATHPLOT mpLayer : public wxObject {
  public:
   mpLayer();
 
-  virtual ~mpLayer(){};
+  virtual ~mpLayer() {};
 
   /** Check whether this layer has a bounding box.
       The default implementation returns \a TRUE. Override and return
@@ -1518,14 +1498,14 @@ class WXDLLIMPEXP_MATHPLOT mpText : public mpLayer {
 class WXDLLIMPEXP_MATHPLOT mpPrintout : public wxPrintout {
  public:
   mpPrintout(mpWindow *drawWindow, const wxChar *title = _T("wxMathPlot print output"));
-  virtual ~mpPrintout(){};
+  virtual ~mpPrintout() {};
 
   void SetDrawState(bool drawState) { drawn = drawState; };
   bool OnPrintPage(int page);
   bool HasPage(int page);
 
  private:
-  mpPrintout() : drawn(false), plotWindow(NULL){};
+  mpPrintout() : drawn(false), plotWindow(NULL) {};
   bool drawn;
   mpWindow *plotWindow;
 };
@@ -1548,7 +1528,7 @@ class WXDLLIMPEXP_MATHPLOT mpMovableObject : public mpLayer {
     m_type = mpLAYER_PLOT;
   }
 
-  virtual ~mpMovableObject(){};
+  virtual ~mpMovableObject() {};
 
   /** Get the current coordinate transformation.
    */
@@ -1760,7 +1740,7 @@ class WXDLLIMPEXP_MATHPLOT mpBitmapLayer : public mpLayer {
     m_type = mpLAYER_BITMAP;
   }
 
-  virtual ~mpBitmapLayer(){};
+  virtual ~mpBitmapLayer() {};
 
   /** Returns a copy of the current bitmap assigned to the layer.
    */
