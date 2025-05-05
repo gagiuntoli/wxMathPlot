@@ -1,21 +1,13 @@
-#include <wx/peninfobase.h>
-#include <wx/wxprec.h>
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
 #include <math.h>
 #include <mathplot.h>
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/listctrl.h>
 #include <wx/log.h>
+#include <wx/peninfobase.h>
 #include <wx/sizer.h>
+#include <wx/wx.h>
+#include <wx/wxprec.h>
 
 double ld(const double x) { return log(x) / log(2.0f); };
 
@@ -70,17 +62,6 @@ class Fibonacci : public mpFX  // mpAX
 
   virtual double GetY(double N) {
     if (N >= 1) {
-      /*
-          for (DWORD mask = 0; mask<N; mask++)
-          {
-              for (int i=0; i<N; i++)
-              {
-                  if (mask
-
-              }
-          }
-      */
-
       return N;
     } else
       return 0;
@@ -104,8 +85,6 @@ class MyFrame : public wxFrame {
   DECLARE_DYNAMIC_CLASS(MyFrame)
   DECLARE_EVENT_TABLE()
 };
-
-// MyApp
 
 class MyApp : public wxApp {
  public:

@@ -95,7 +95,6 @@ class MyFrame : public wxFrame {
   void OnAlignXAxis(wxCommandEvent &event);
   void OnAlignYAxis(wxCommandEvent &event);
   void OnToggleGrid(wxCommandEvent &event);
-  void OnToggleScrollbars(wxCommandEvent &event);
   void OnToggleInfoLayer(wxCommandEvent &event);
   void OnSaveScreenshot(wxCommandEvent &event);
   void OnToggleLissajoux(wxCommandEvent &event);
@@ -129,7 +128,6 @@ enum {
   ID_ALIGN_X_AXIS,
   ID_ALIGN_Y_AXIS,
   ID_TOGGLE_GRID,
-  ID_TOGGLE_SCROLLBARS,
   ID_TOGGLE_INFO,
   ID_SAVE_SCREENSHOT,
   ID_TOGGLE_LISSAJOUX,
@@ -149,7 +147,6 @@ EVT_MENU(mpID_FIT, MyFrame::OnFit)
 EVT_MENU(ID_ALIGN_X_AXIS, MyFrame::OnAlignXAxis)
 EVT_MENU(ID_ALIGN_Y_AXIS, MyFrame::OnAlignYAxis)
 EVT_MENU(ID_TOGGLE_GRID, MyFrame::OnToggleGrid)
-EVT_MENU(ID_TOGGLE_SCROLLBARS, MyFrame::OnToggleScrollbars)
 EVT_MENU(ID_TOGGLE_INFO, MyFrame::OnToggleInfoLayer)
 EVT_MENU(ID_SAVE_SCREENSHOT, MyFrame::OnSaveScreenshot)
 EVT_MENU(ID_BLACK_THEME, MyFrame::OnBlackTheme)
@@ -178,7 +175,6 @@ MyFrame::MyFrame()
   view_menu->Append(ID_ALIGN_X_AXIS, wxT("Switch &X axis align"));
   view_menu->Append(ID_ALIGN_Y_AXIS, wxT("Switch &Y axis align"));
   view_menu->Append(ID_TOGGLE_GRID, wxT("Toggle grid/ticks"));
-  view_menu->AppendCheckItem(ID_TOGGLE_SCROLLBARS, wxT("Show Scroll Bars"));
   view_menu->AppendCheckItem(ID_TOGGLE_INFO, wxT("Show overlay info box"));
   view_menu->AppendCheckItem(ID_BLACK_THEME, wxT("Switch to black background theme"));
 
@@ -199,7 +195,7 @@ MyFrame::MyFrame()
   CreateStatusBar(1);
 
   mpLayer *l;
-  mpFXYVector *vectorLayer = new mpFXYVector(_("Vector"));
+  mpFXYVector *vectorLayer = new mpFXYVector("Vector");
 
   // Create two vectors for x,y and fill them with data
   std::vector<double> vectorx, vectory;
@@ -259,7 +255,6 @@ MyFrame::MyFrame()
   axesPos[1] = 0;
   ticks = true;
 
-  m_plot->SetMPScrollbars(false);
   m_plot->Fit();
 }
 
@@ -354,14 +349,6 @@ void MyFrame::OnToggleGrid(wxCommandEvent &WXUNUSED(event)) {
   ((mpScaleX *)(m_plot->GetLayer(0)))->SetTicks(ticks);
   ((mpScaleY *)(m_plot->GetLayer(1)))->SetTicks(ticks);
   m_plot->UpdateAll();
-}
-
-void MyFrame::OnToggleScrollbars(wxCommandEvent &event) {
-  if (event.IsChecked())
-    m_plot->SetMPScrollbars(true);
-  else
-    m_plot->SetMPScrollbars(false);
-  event.Skip();
 }
 
 void MyFrame::OnToggleInfoLayer(wxCommandEvent &event) {

@@ -1,22 +1,14 @@
-#include <wx/peninfobase.h>
-#include <wx/wxprec.h>
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
 #include <math.h>
 #include <mathplot.h>
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/listctrl.h>
 #include <wx/log.h>
+#include <wx/peninfobase.h>
 #include <wx/print.h>
 #include <wx/sizer.h>
+#include <wx/wx.h>
+#include <wx/wxprec.h>
 
 class MyFrame;
 class MyApp;
@@ -43,7 +35,11 @@ class MyFrame : public wxFrame {
 
 class MyApp : public wxApp {
  public:
-  virtual bool OnInit();
+  virtual bool OnInit() {
+    wxFrame *frame = new MyFrame();
+    frame->Show(TRUE);
+    return TRUE;
+  }
 };
 
 IMPLEMENT_APP(MyApp)
@@ -69,7 +65,7 @@ EVT_TIMER(TIMER_ID, MyFrame::OnTimer)
 END_EVENT_TABLE()
 
 MyFrame::MyFrame()
-    : wxFrame((wxFrame *)NULL, -1, wxT("wxWindows mathplot sample #3 - 'mpMovableObject' objects"), wxDefaultPosition,
+    : wxFrame(nullptr, wxID_ANY, wxT("wxWindows mathplot sample #3 - 'mpMovableObject' objects"), wxDefaultPosition,
               wxSize(500, 500)) {
   wxMenu *file_menu = new wxMenu();
   wxMenu *view_menu = new wxMenu();
@@ -88,8 +84,6 @@ MyFrame::MyFrame()
   SetMenuBar(menu_bar);
   CreateStatusBar(1);
 
-  // mpLayer* l;
-
   m_plot = new mpWindow(this, -1, wxPoint(0, 0), wxSize(100, 100), wxSUNKEN_BORDER);
   m_plot->SetMargins(0, 0, 50, 70);
   mpScaleX *xaxis = new mpScaleX(wxT("x"), mpALIGN_BOTTOM, true);
@@ -105,8 +99,6 @@ MyFrame::MyFrame()
   wxImage bmp;
   ::wxInitAllImageHandlers();
   bmp.LoadFile(wxT("./gridmap.png"), wxBITMAP_TYPE_PNG);
-
-  bmp.SetMaskColour(0, 0, 0);
 
   bmpLayer->SetBitmap(bmp, -40, -40, 120, 120);
 
@@ -223,11 +215,4 @@ void MyFrame::OnTimer(wxTimerEvent &) {
     obj->SetCoordinateBase(x, y, phi);
     m_plot->UpdateAll();
   }
-}
-
-bool MyApp::OnInit() {
-  wxFrame *frame = new MyFrame();
-  frame->Show(TRUE);
-
-  return TRUE;
 }
