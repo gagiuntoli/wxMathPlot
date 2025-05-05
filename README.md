@@ -1,82 +1,44 @@
-# This is the old readme
+# wxMathPlot library
 
-wxMathPlot is a framework for mathematical graph plotting in wxWindows.
+This is a fork of the original `wxMathPlot` library, a framework for mathematical graph plotting in wxWidgets.
 
-For more information go to
-https://sourceforge.net/projects/wxmathplot/
-http://wxmathplot.sourceforge.net/
+# Compilation
 
-0.1.2 Release notes
--------------------
-Scrollers back again. Ability to build as DLL in Windows. Introduced colour theme, plus minor fixes.
+## Linux
 
-0.1.1 Release notes
--------------------
-Minor bugfixes, introduced show/hide for single layer and added library packaging.
+```shell
+cmake -B build -DCMAKE_BUILD_TYPE=[Debug|Release]
+cmake --build build
+```
 
-0.1.0 Release notes
--------------------
+# Examples
 
-Library has been deeply revised: the coordinate system has been changed for code simplification. Added a lot of new functionalities:
-1. Printing
-2. Saving screenshots as images
-3. Legend
-4. Mouse coordinates display
-5. A number of new layer types
-6. Optional axis draw margins (to avoid that plots can hide axis labels)
-...and a lot of bugfixing! See Changelog for more details.
+After compilation, the examples can be run simply doing:
 
+```shell
+./build/main_<example>
+```
 
-0.03 Release notes
-------------------
+The source code is located in the `main/` folder.
 
-Some useful functionalities has been added.
-The axes now can be set to be drawn on 5 different configurations for each one. In addition to the central mode prevoiusly avalilable, you can draw them to the the borders of the window, or close to the border but with an offset to let labels within. The axes are now always visible when you resize the window. This style is more similar to technical softwares, and more useful, I think.
-Mouse operations are now available for zooming, panning and scrolling the window. You can also activate double buffering of the mpWindow to avoid flickering.
-Three new classes are available, mpText, mpProfile and mpFXYVector. See Changelog for more details.
+# Integration with other code
 
-A special acknowledgement goes to the contributors Jose Luis Blanco and Val Greene who provided a significant part of the new functionalities. 
+## CMake
 
-0.02 Release notes
-------------------
+When using CMake, locate the library in an internal directory of your project like `lib/wxMathPlot/` and then on your `CMakeLists.txt` add:
 
-While the project has been idle for about 4 years, this release simply fixes
-some thing to adapt to new versions of wxWidgets. The use of deprecated
-classes or method has been corrected. Only a simple method for layer
-counting has been added.
+```cmake
+add_subdirectory(lib/wxMathPlot)
 
-wxMathPlot now works on Linux (tested for Mepis 6.5 and Debian Etch using
-wxGTK-2.6), and Windows (built under XP using Visual Studio Express 2005).
-If you experience to test it under other platforms, please write me at:
-cdron77(at)sourceforge.net
+target_link_libraries(application
+   wxWidgets::wxWidgets
+   wxmathplot
+   ... # other libraries
+)
+```
 
+This will link your application against `wxMathPlot`.
 
+# Contact
 
-Installing
-----------
-
-wxMathPlot uses cmake build environment
-It requires wxWidgets >= 2.6 to be installed.
-
-Under POSIX systems, to build and install wxMathPlot run:
-
-cmake -i .
-make
-make install
-
-Running cmake with -i option causes to get an interactive shell which asks some question on how to build the library.
-
-Default install directory for headers is:
-/usr/local/include
-
-and the lib to
-/usr/local/lib
-
-Samples
--------
-
-A subdirectory 'samples' contains sample applications using wxMathLib.
-They re built together with the library, if the relative option is selected by CMake.
-
-
-David Schalig, email sf(at)schalig.org
+- gagiuntoli@gmail.com
