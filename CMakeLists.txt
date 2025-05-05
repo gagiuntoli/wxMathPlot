@@ -29,19 +29,19 @@ add_library(wxmathplot STATIC mathplot.cpp mathplot.h)
 target_link_libraries(wxmathplot PUBLIC wxWidgets::wxWidgets)
 target_include_directories(wxmathplot PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(EXECUTABLE_SOURCES
-  samples/sample1/mp1.cpp
-  samples/sample2/mp2.cpp
-  samples/sample3/mp3.cpp
-  )
-
 if (WXMATHPLOT_COMPILE_EXECUTABLES)
-  foreach(exe_src IN LISTS EXECUTABLE_SOURCES)
+  file(GLOB EXECUTABLES "main/*.cpp")
+  foreach(exe_src IN LISTS EXECUTABLES)
     get_filename_component(exe_name ${exe_src} NAME_WE)
-    add_executable(${exe_name} 
-      WIN32 # important for Windows GUI applications
-      ${exe_src}
-      )
+  
+    add_executable(${exe_name}
+      WIN32 # important in Windows GUI-based applications
+      ${exe_src})
+  
     target_link_libraries(${exe_name} wxmathplot)
+    target_include_directories(${exe_name} PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}
+      ${CMAKE_CURRENT_SOURCE_DIR}/lib
+      )
   endforeach()
 endif()
